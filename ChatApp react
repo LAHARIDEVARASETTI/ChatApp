@@ -1,0 +1,47 @@
+import React, { useState } from 'react';
+
+const user_list = ["Alan", "Bob", "Carol", "Dean", "Elin"];
+
+function App() {
+  const [message, setMessage] = useState('');
+  const [chat, setChat] = useState([]);
+
+  const handleChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (message.trim() === '') return;
+
+    const randomUser = user_list[Math.floor(Math.random() * user_list.length)];
+    const newMessage = {
+      text: message,
+      username: randomUser,
+      likes: 0
+    };
+
+    setChat([...chat, newMessage]);
+    setMessage('');
+  };
+
+  const handleLike = (index) => {
+    const updatedChat = [...chat];
+    updatedChat[index].likes += 1;
+    setChat(updatedChat);
+  };
+
+  return (
+    React.createElement('div', null,
+      React.createElement('h1', null, 'Chat App'),
+      React.createElement('div', null,
+        chat.map((msg, index) => (
+          React.createElement('div', { key: index },
+            React.createElement('p', null, msg.text),
+            React.createElement('button', { onClick: () => handleLike(index) }, `Like (${msg.likes})`),
+            React.createElement('p', null, msg.username)
+          )
+        ))
+      ),
+      React.createElement('form', { onSubmit: handleSubmit },
+        React.createElement
